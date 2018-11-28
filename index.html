@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>My First DApp</title>
+        <link rel="stylesheet" href="./css/app.css">
+    </head>
+
+    <body>
+        <h1>My First DApp</h1>
+        <p id="result"></p>
+        <p>
+            <label for="name">Name:</label>
+            <input id="name">
+        </p>
+        <p>
+            <label for="message">Message:</label>
+            <input id="message">
+        </p>
+        <p><button id="btnSave">Save</button></p>
+        <script src="./js/web3.min.js" charset="utf-8"></script>
+    </body>
+
+    <script>
+        // instantiate html dom elements
+        const name = document.getElementById('name');
+        const message = document.getElementById('message');
+        const result = document.getElementById('result');
+        const btnSave = document.getElementById('btnSave');
+
+        // initialize Web3
+        const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+
+        web3.eth.getAccounts(function(error, accounts) {
+            if (error) return console.log(error);
+            // use the first account as default
+            web3.eth.defaultAccount = accounts[0];
+            init();
+        });
+
+        // initialize DApp
+        function init() {
+            // HelloWorld deployed contract address (change this to your own)
+            const helloWorldAddress = '0x8cdaf0cd259887258bc13a92c0a6da92698644c0';
+
+            // HelloWorld deployed contract ABI (also change this to your own)
+            const helloWorldAbi = [
+            	{
+            		"constant": false,
+            		"inputs": [
+            			{
+            				"name": "_message",
+            				"type": "string"
+            			},
+            			{
+            				"name": "_name",
+            				"type": "string"
+            			}
+            		],
+            		"name": "setMessage",
+            		"outputs": [],
+            		"payable": true,
+            		"stateMutability": "payable",
+            		"type": "function"
+            	},
+            	{
+            		"constant": true,
+            		"inputs": [],
+            		"name": "getMessage",
+            		"outputs": [
+            			{
+            				"name": "",
+            				"type": "string"
+            			},
+            			{
+            				"name": "",
+            				"type": "string"
+            			}
+            		],
+            		"payable": false,
+            		"stateMutability": "view",
+            		"type": "function"
+            	}
+            ];
+
+            // intantiate HelloWorld contract using its Address and ABI
+            const helloWorld = new web3.eth.Contract(helloWorldAbi, helloWorldAddress);
+
+            // function to read the current saved Message
+            function readMessage() {
+                helloWorld.methods
+                    .getMessage()
+                    .call()
+                    .then((res) => {
+                        const resMessage = res[0];
+                        const resName = res[1];
+                        result.innerHTML = resMessage + ' (' + resName + ')';
+                    })
+                    .catch(console.error);
+            }
+
+            // save name and message when save button is clicked
+            btnSave.addEventListener('click', function() {
+                if (!(message.value && name.value)) {
+                    throw new Error("Message and Name are required");
+                }
+                helloWorld.methods
+                    .setMessage(message.value, name.value)
+                    .send({from: web3.eth.defaultAccount})
+                    .then(() => {
+                        readMessage();
+                    })
+                    .catch(console.error);
+            });
+
+            // read current Message once everything is ready
+            readMessage();
+        }
+    </script>
+</html>

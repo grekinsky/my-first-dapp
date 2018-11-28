@@ -1,0 +1,48 @@
+body {
+    color: #402c19;
+    background-color: #F4EEE9;
+    font-family: sans-serif;
+    font-size: 1.25em;
+    text-align: center;
+}
+
+h1, h2 {
+    font-weight: normal;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#result {
+    background-color: white;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 20px;
+    width: 400px;
+}
+
+#name, #message {
+    border: 1px solid #402c19;
+    border-radius: 3px;
+    color: #402c19;
+    font-size: 1em;
+    padding: 10px;
+    vertical-align: middle;
+    outline: none;
+}
+
+#name:focus, #message:focus {
+    border-color: #57C1AB;
+}
+
+#btnSave {
+    border: 0;
+    border-radius: 2px;
+    background-color: #57C1AB;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 10px 20px;
+}
