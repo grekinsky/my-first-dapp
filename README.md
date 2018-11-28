@@ -2,7 +2,7 @@
 
 > Ejemplo de mi primera DApp usando Remix IDE y Ganache
 
-![Imagen de Mi Primera DApp](https://github.com/grekinsky/my-first-dapp/assets/My-First-DApp.jpg)
+![Imagen de Mi Primera DApp](assets/My-First-DApp.jpg)
 
 ## Requerimientos
 
